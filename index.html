@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <title>ContactHub - Smart Contact Manager</title>
+  </head>
+  <body>
+    <!-- NAV BAR -->
+    <nav class="navbar navbar-expand custom-navbar sticky-top">
+      <div class="container max-w-7xl px-3 px-sm-4">
+        <!-- Brand Logo & Name -->
+        <a class="navbar-brand d-flex align-items-center gap-3 m-0" href="#">
+          <div class="brand-icon">
+            <i class="fa-solid fa-address-book"></i>
+          </div>
+          <div>
+            <div class="brand-title">Contact<span>Hub</span></div>
+            <div class="brand-subtitle">Smart Contact Manager</div>
+          </div>
+        </a>
+
+        <!-- Right Actions -->
+        <div class="d-flex align-items-center gap-2 gap-sm-3 ms-auto">
+          <!-- Button triggers Modal -->
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addContactModal"
+          >
+            <i class="fa-solid fa-plus me-1"></i> Add Contact
+          </button>
+
+          <a href="#" class="nav-icon-btn ms-1" title="Notifications">
+            <i class="fa-regular fa-bell"></i>
+          </a>
+
+          <a href="#" class="nav-icon-btn" title="Settings">
+            <i class="fa-solid fa-gear"></i>
+          </a>
+
+          <a href="#" class="ms-1" title="User Profile">
+            <img
+              src="images/avatar-2.jpg"
+              alt="User Profile"
+              class="user-avatar"
+            />
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="container max-w-7xl px-3 px-sm-4 pb-5">
+      <section class="dashboard-main-section">
+        <!-- Top Stats Cards -->
+        <div class="row g-3 g-md-4 mb-4">
+          <!-- Total Card -->
+          <div class="col-12 col-md-4">
+            <div class="stat-card d-flex align-items-center gap-3">
+              <div class="stat-icon-wrapper bg-icon-total">
+                <i class="fa-solid fa-user-group"></i>
+              </div>
+              <div>
+                <div class="stat-label">TOTAL</div>
+                <div id="total" class="stat-value">0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Favorites Card -->
+          <div class="col-12 col-md-4">
+            <div class="stat-card d-flex align-items-center gap-3">
+              <div class="stat-icon-wrapper bg-icon-favorites">
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <div>
+                <div class="stat-label">FAVORITES</div>
+                <div id="favorite" class="stat-value">0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Emergency Card -->
+          <div class="col-12 col-md-4">
+            <div class="stat-card d-flex align-items-center gap-3">
+              <div class="stat-icon-wrapper bg-icon-emergency">
+                <i class="fa-solid fa-heart-pulse"></i>
+              </div>
+              <div>
+                <div class="stat-label">EMERGENCY</div>
+                <div id="emergency" class="stat-value">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Area Layout Grid -->
+        <div class="row g-4">
+          <!-- Left Main Column (Contacts Overview & Search) -->
+          <div class="col-12 col-lg-9">
+            <div class="all-contacts-container">
+              <!-- Section Header -->
+              <div class="mb-3">
+                <h1 class="section-title mb-1">All Contacts</h1>
+                <p class="section-subtitle mb-0">
+                  Manage and organize your 0 contacts
+                </p>
+              </div>
+
+              <!-- Search Input -->
+              <div class="search-box mb-4">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                  id="searchInput"
+                  oninput="searchContact()"
+                  type="text"
+                  class="form-control search-input"
+                  placeholder="Search by name, phone, or email..."
+                />
+              </div>
+
+              <!-- Empty State Box -->
+              <div id="demo" class="row">
+                <div class="empty-state-box">
+                  <div class="empty-icon-card">
+                    <i class="fa-regular fa-address-card"></i>
+                  </div>
+                  <div class="empty-title">No contacts found</div>
+                  <div class="empty-subtitle">
+                    Click "Add Contact" to get started
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Sidebar Column (Favorites & Emergency Cards) -->
+          <div class="col-12 col-lg-3">
+            <div class="sidebar-shortcuts-container d-flex flex-column gap-4">
+              <!-- Favorites Card -->
+              <div
+                class="card sidebar-card border-0 rounded-4 shadow-sm overflow-hidden"
+              >
+                <!-- Header -->
+                <div
+                  class="sidebar-header-fav p-3 d-flex align-items-center gap-3"
+                >
+                  <div
+                    class="sidebar-icon bg-icon-favorites d-flex align-items-center justify-content-center text-white rounded-3 fs-5 shadow-sm"
+                  >
+                    <i class="fa-solid fa-star"></i>
+                  </div>
+                  <div>
+                    <div class="sidebar-title fw-bold text-dark fs-6">
+                      Favorites
+                    </div>
+                    <div class="sidebar-subtitle text-muted fs-7">
+                      Quick access to starred contacts
+                    </div>
+                  </div>
+                </div>
+                <!-- Body -->
+                <div id="favorites" class="sidebar-body p-3 bg-white">
+                  <!-- Contact Item -->
+          
+                </div>
+              </div>
+
+              <!-- Emergency Card -->
+              <div
+                class="card sidebar-card border-0 rounded-4 shadow-sm overflow-hidden"
+              >
+                <!-- Header -->
+                <div
+                  class="sidebar-header-emerg p-3 d-flex align-items-center gap-3"
+                >
+                  <div
+                    class="sidebar-icon bg-icon-emergency d-flex align-items-center justify-content-center text-white rounded-3 fs-5 shadow-sm"
+                  >
+                    <i class="fa-solid fa-heart-pulse"></i>
+                  </div>
+                  <div>
+                    <div class="sidebar-title fw-bold text-dark fs-6">
+                      Emergency
+                    </div>
+                    <div class="sidebar-subtitle text-muted fs-7">
+                      Important contacts for urgent calls
+                    </div>
+                  </div>
+                </div>
+                <!-- Body -->
+                <div id="emergencyContainer" class="sidebar-body p-3 bg-white">
+                  <!-- Contact Item -->
+                  
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============================================== -->
+    <!-- ADD CONTACT MODAL (مكان الـ Modal الصحيح هنا!) -->
+    <!-- ============================================== -->
+    <!-- ADD NEW CONTACT MODAL -->
+    <div
+      class="modal fade h-100"
+      id="addContactModal"
+      tabindex="-1"
+      aria-labelledby="addContactModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4 p-2 p-sm-3">
+          <!-- Modal Header -->
+          <div class="modal-header border-0 pb-0">
+            <h5
+              class="modal-title fs-5 fw-bold text-dark"
+              id="addContactModalLabel"
+            >
+              Add New Contact
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="modal-body mobel-body pt-3 pb-2">
+            <form id="addContactForm">
+              <!-- Avatar Upload Area -->
+              <div class="text-center mb-4">
+                <div
+                  class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-2"
+                  style="width: 80px; height: 80px; background-color: #4f46e5"
+                >
+                  <i class="fa-solid fa-user text-white fs-2"></i>
+                </div>
+                <label
+                  for="contactPhotoInput"
+                  class="btn btn-sm btn-light border text-secondary rounded-pill px-3 py-1 shadow-sm fs-7"
+                >
+                  <i class="fa-solid fa-camera me-1"></i> Change Photo
+                </label>
+                <input
+                  type="file"
+                  id="contactPhotoInput"
+                  class="d-none"
+                  accept="image/*"
+                />
+              </div>
+
+              <!-- Full Name -->
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark mb-1">
+                  Full Name <span class="text-danger">*</span>
+                </label>
+                <input
+                oninput="validate(this, 'msgName')"
+                  id="fullName"
+                  type="text"
+                  class="form-control form-control-lg fs-6 rounded-3"
+                  placeholder="Enter full name"
+                  required
+                />
+                <p id="msgName" class="alert alert-danger mt-1">name must consist of 2-50 characters</p>
+              </div>
+
+              <!-- Phone Number -->
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark mb-1">
+                  Phone Number <span class="text-danger">*</span>
+                </label>
+                <input
+                  oninput="validate(this, 'msgPhoneNumber')"
+                  id="phoneNumber"
+                  type="tel"
+                  class="form-control form-control-lg fs-6 rounded-3"
+                  placeholder="e.g., 01012345678"
+                  required
+                />
+                <p id="msgPhoneNumber" class="alert alert-danger mt-1">Phone number must be a valid Egyptian phone number</p>
+              </div>
+
+              <!-- Email Address -->
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark mb-1">
+                  Email Address
+                </label>
+                <input
+                oninput="validate(this, 'msgEmail')"
+                  id="email"
+                  type="email"
+                  class="form-control form-control-lg fs-6 rounded-3"
+                  placeholder="name@example.com"
+                />
+                  <p id="msgEmail" class="alert alert-danger mt-1">Please enter a valid email address</p>
+              </div>
+
+              <!-- Address -->
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark mb-1">
+                  Address
+                </label>
+                <input
+                  id="address"
+                  type="text"
+                  class="form-control form-control-lg fs-6 rounded-3"
+                  placeholder="Enter address"
+                />
+              </div>
+
+              <!-- Group -->
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark mb-1">
+                  Group
+                </label>
+                <select
+                oninput="validate(this, 'msgSelectGroup')"
+                  id="selectGroup"
+                  class="form-select form-select-lg fs-6 rounded-3 text-secondary"
+                >
+                  <option value="" selected disabled>Select a group</option>
+                  <option value="family">Family</option>
+                  <option value="friends">Friends</option>
+                  <option value="work">Work</option>
+                  <option value="other">Other</option>
+                </select>
+                 <p id="msgSelectGroup" class="alert alert-danger mt-1">Please select a group</p>
+              </div>
+
+              <!-- Notes -->
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark mb-1">
+                  Notes
+                </label>
+                <textarea
+                  id="notes"
+                  class="form-control fs-6 rounded-3"
+                  rows="3"
+                  placeholder="Add notes about this contact"
+                ></textarea>
+              </div>
+
+              <!-- Checkboxes (Favorite & Emergency) -->
+              <div class="d-flex align-items-center gap-4 mt-3 mb-2 pt-1">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="favoriteCheck"
+                  />
+                  <label
+                    class="form-check-label small fw-semibold text-dark"
+                    for="favoriteCheck"
+                  >
+                    <i class="fa-solid fa-star text-warning me-1"></i> Favorite
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="emergencyCheck"
+                  />
+                  <label
+                    class="form-check-label small fw-semibold text-dark"
+                    for="emergencyCheck"
+                  >
+                    <i class="fa-solid fa-heart-pulse text-danger me-1"></i>
+                    Emergency
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Modal Footer -->
+          <div
+            class="modal-footer border-0 pt-2 pb-0 d-flex justify-content-end gap-2"
+          >
+            <button
+              type="button"
+              class="btn btn-light rounded-3 px-4 fw-semibold text-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              id="saveContact"
+              onclick="AddContact()"
+              type="button"
+              form="addContactForm"
+              class="btn text-white rounded-3 px-4 fw-semibold d-flex align-items-center gap-2"
+              style="background-color: #6366f1; border: none"
+            >
+              <i class="fa-solid fa-check"></i> Save Contact
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
